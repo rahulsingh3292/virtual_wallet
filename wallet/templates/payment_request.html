@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title%} Payment Requests {% endblock title%}
+
+
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">username</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for request in payment_requests %}
+    <tr id="request_{{request.id}}">
+      <input type="hidden" name="to_user_id" id="request_{{request.id}}_to_user_id" value="{{request.from_user.id}}" />
+      <input type="hidden" name="amount" id="request_{{request.id}}_amount" value="{{request.amount}}" />
+      <th scope="row">{{request.from_user.username}}</th>
+      <td>{{request.amount}}</td>
+      <td id="status_request_{{request.id}}">{{request.status}}</td>
+
+      <td>
+        {% if request.status == "Paid" %}
+        <p class="text-white">
+          
+        </p>
+
+        {% elif request.status == "Rejected" %}
+        <p>
+          
+        </p>
+        {% else %} 
+        <div id="action_{{request.id}}">
+        <button class="pay-or-reject btn  btn-primary" requestid="{{request.id}}" action='pay'>Pay</button>
+        <button class="pay-or-reject btn btn-danger" requestid="{{request.id}}" action="reject" type="button">Reject</button>
+ </div>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock body %}
+{% block custom_js %}
+<script type="text/javascript" charset="utf-8">
+ 
+    $(".pay-or-reject").click(function() {
+    
+    if($(this).attr("action") == "reject"){
+      var action = "reject"
+    } else{
+      var action = "pay"
+    }
+  
+    const request_id = $(this).attr("requestid") 
+    const amount = $("#request_"+request_id+"_amount").val() 
+    const to_user_id = $("#request_"+request_id+"_to_user_id").val() 
+    console.log(amount)
+    console.log(amount)
+    $.ajax({
+      url : "/payment_request/pay_or_reject/",
+      method: "POST",
+      data: {
+        action: action,
+        amount: amount,
+        payment_request_id: request_id,
+        to_user_id:to_user_id
+      },
+      success: function(resp){
+        if (resp.status === 200){
+          if(resp.action == "reject"){
+            $("#status_request_"+request_id).text("Rejected")
+            $("#action_"+request_id).hide()
+            
+            alert("rejected")
+          } else{
+          $("#action_"+request_id).hide()
+          $("#status_request_"+request_id).text("Paid")
+          alert("succcessfully paid")
+            
+          }
+        }
+        
+        else if (resp.status==400){
+          alert("not enough balance")
+        }
+        else{
+          alert("server error")
+        }
+        
+      },
+      error: function(err){
+        alert("something went wrong")
+      }
+    })
+    })
+    
+ 
+  
+</script>
+{% endblock custom_js %}

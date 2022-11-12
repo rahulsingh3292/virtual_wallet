@@ -1,0 +1,49 @@
+
+{% extends "base.html" %} 
+
+{% block title%} Pay/Request {% endblock title%} 
+  
+  
+{% block body %} 
+<div class="container">
+  <h1> you ->  {{request.user.username}} </h1>
+    <h1 class="text-primary"> Request or Pay To user {{user.username}}  </h1>
+  
+   <form  accept-charset="utf-8">
+    
+     <input class="form-control" type="number" name="amount" id="amount" placeholder="0.00" />
+     <br> 
+     <button class="btn btn-warning"  type="button" id="request">Request</button>
+     <button class="btn btn-primary ml-4" type="button" id="pay">Pay</button>
+   </form>
+</div>
+{% endblock body %} 
+
+{% block custom_js %}
+<script src="/static/js/handle_payment.js" type="text/javascript"></script>
+<script type="text/javascript">
+   $("#request").click(function(){
+     const to_user_id= "{{user.id}}"
+     const amount = $("#amount").val();
+     if (amount < 5){
+      alert("for sending money amount should be more than 5 rupees ")
+       return 
+     }
+     requestPayment(amount,to_user_id)
+     $("#amount").val("");
+     
+   })
+   
+   $("#pay").click(function(){
+     const to_user_id= "{{user.id}}"
+     const amount = $("#amount").val();
+     if (amount < 5){
+      alert("for sending money amount should be more than 5 rupees ")
+       return 
+     }
+     sendPayment(amount,to_user_id)
+     $("#amount").val("");
+   })
+   
+</script>
+{% endblock custom_js %}

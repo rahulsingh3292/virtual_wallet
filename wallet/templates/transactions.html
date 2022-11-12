@@ -1,0 +1,32 @@
+
+
+{% extends "base.html" %} 
+
+{% block title%} Pay/Request {% endblock title%} 
+  
+  
+{% block body %} 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Charges</th>
+      <th scope="col">Remark</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in transactions %}
+    <tr>
+      <th scope="row">{{transaction.id}}</th>
+      <td>{{transaction.amount}}</td>
+      <td>{{transaction.balance}}</td>
+      <td>{{transaction.charges}}</td>
+      <td>{{transaction.remark}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock body %} 
+

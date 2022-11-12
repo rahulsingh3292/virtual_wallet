@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title%} Home {% endblock title%}
+
+
+{% block body %}
+
+<div class="container">
+  <h1>logged-in as  {{request.user.username}} </h1><br> 
+  <p> Account-Type: {% if request.user.is_premium_user%} Premium {% else %} Non-Premium {% endif %}
+  </p> 
+  <p> Balance : {{balance}}</p>
+  <a class="btn btn-link" href="/user/transactions/">transactions</a> 
+  {% if not request.user.is_superuser %}
+  <a class="btn btn-link" href="/user/payment_requests/">payment requests</a> 
+  {% endif %}
+  <a class="btn btn-link" href="/accounts/logout/">logout</a> 
+  
+</div>
+{% if not request.user.is_superuser %}
+<div class="container mt-4">
+<ul class="list-group">
+  {% for user in users %}
+  <li class="list-group-item">
+    {{user.username}} 
+    <a class="btn btn-link" href="/user/{{user.id}}/">pay-or-request</a>
+  </li>
+  {% endfor %}
+</ul>
+</div>
+{% endif %}
+{% endblock body %}
+
