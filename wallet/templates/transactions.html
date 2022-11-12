@@ -20,7 +20,9 @@
     {% for transaction in transactions %}
     <tr>
       <th scope="row">{{transaction.id}}</th>
-      <td>{{transaction.amount}}</td>
+      <td> {% if transaction.is_sent %}
+       (-) {% else %} (+) {% endif %} {{transaction.amount}}
+      </td>
       <td>{{transaction.balance}}</td>
       <td>{{transaction.charges}}</td>
       <td>{{transaction.remark}}</td>

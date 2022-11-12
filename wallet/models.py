@@ -36,7 +36,7 @@ class Transaction(models.Model):
   charges = models.IntegerField(blank=True) 
   balance = models.IntegerField(default=0)
   remark = models.TextField()
-  is_added = models.BooleanField(default=True)
+  is_sent = models.BooleanField(default=False)
   
   def __str__(self):
     return self.user.username 

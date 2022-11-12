@@ -8,7 +8,7 @@ from  ..payment import Payment
 from  ..models import PaymentRequest
 
 class BasePayView(View):
-  def pay(self,user,data) -> dict[str,any]:
+  def pay(self,user: User ,data: dict[str,any]) -> dict[str,any]:
     amount: int = int(data.get("amount"))
     to_user_id: int = data.get("to_user_id")
     payment: Payment = Payment(with_user=user, to_user_id=to_user_id)
@@ -77,7 +77,3 @@ class AcceptOrDenyPaymentRequest(BasePayView):
       "action":"reject"
     })
        
-    
-  
-
-  

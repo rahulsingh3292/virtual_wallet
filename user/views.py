@@ -36,7 +36,6 @@ class LoginView(View):
     return render(request,"login.html")
   
   def post(self, request: HttpRequest) -> JsonResponse:
-    print(request.POST.dict())
     user = authenticate(request,**request.POST.dict()) 
     if user is not None:
       login(request,user)

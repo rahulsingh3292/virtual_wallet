@@ -1,4 +1,3 @@
-
 from django.db import transaction
 
 from user.models import User 
@@ -93,21 +92,3 @@ class Payment:
           "message":"payment done"
         }
         self.payment_detail=detail
-        
-    
-              
-      
-     
-      
-    
- 
-      
-      
-      
-      
-      
-      
-        
-    
-  
-    
