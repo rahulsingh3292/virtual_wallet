@@ -11,6 +11,8 @@ from .models import User
 @method_decorator(csrf_exempt,name="dispatch") 
 class SignUpView(View):
   def get(self, request: HttpRequest):
+    if request.user.is_authenticated:
+      return redirect("/")
     return render(request, "signup.html") 
     
   def post(self, request: HttpRequest) -> JsonResponse:
@@ -28,11 +30,13 @@ class SignUpView(View):
     return JsonResponse({
       "status":201
     })
-  
- 
+
+    
 @method_decorator(csrf_exempt,name="dispatch")
 class LoginView(View):
   def get(self,request: HttpRequest):
+    if request.user.is_authenticated:
+      return redirect("/")
     return render(request,"login.html")
   
   def post(self, request: HttpRequest) -> JsonResponse:
@@ -45,7 +49,8 @@ class LoginView(View):
     return JsonResponse({
       "status":404
     })
-    
+ 
+  
 def logout_user(request: HttpRequest):
   logout(request)
   return redirect("/accounts/login/")

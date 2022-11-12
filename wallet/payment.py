@@ -76,12 +76,11 @@ class Payment:
         current_user_wallet.balance -= (amount+payment_charges) 
         paying_user_wallet.balance += (amount - receiving_charges)
         
-       
         paying_user_wallet.save() 
         current_user_wallet.save() 
-        
+       
         add_charges_to_admin_account(payment_charges, receiving_charges, with_user=self.with_user.username,to_user=self.paying_user.username, amount=amount)
-        
+      
         paymentTransaction.create_transaction(user=self.with_user, balance=current_user_wallet.balance, amount=amount,remark=f"{amount} sent to {self.paying_user.username}")
         paymentTransaction.create_transaction(user=self.paying_user, amount=amount,balance=paying_user_wallet.balance, remark=f"{amount} received by {self.with_user.username}"
         , is_received=True)
