@@ -32,17 +32,18 @@ def add_charges_to_admin_account(payment_charges: int,receiving_charges: int, wi
   curr_balance: int = wallet.balance
   
   curr_balance +=payment_charges
-  paymentTransaction.create_transaction(user=user, balance=curr_balance,amount=amount, remark=f"{amount} sent by {with_user} to {to_user}"
+  paymentTransaction.create_transaction(user=user, balance=curr_balance,amount=payment_charges, remark=f"{amount} sent by {with_user} to {to_user}"
         )
         
   curr_balance +=receiving_charges
-  paymentTransaction.create_transaction(user=user,amount=amount, balance=curr_balance, remark=f"{amount} received from  {with_user} by {to_user}" , is_received=True)
+  paymentTransaction.create_transaction(user=user,amount=receiving_charges, balance=curr_balance, remark=f"{amount} received from  {with_user} by {to_user}" , is_received=True)
   
   wallet.balance += (payment_charges+receiving_charges)
   wallet.save()
 
 def have_sufficient_balance_to_pay(user: User ,wallet_balance: int ,amount: int) -> bool:
    calculated_balance = (wallet_balance) -  (amount+(int(amount*(0.03 if user.is_premium_user else 0.05))))
+   print("total to pay",calculated_balance)
    return calculated_balance >= 0
 
 class Payment:
