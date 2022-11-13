@@ -41,6 +41,9 @@ def add_charges_to_admin_account(payment_charges: int,receiving_charges: int, wi
   wallet.balance += (payment_charges+receiving_charges)
   wallet.save()
 
+def have_sufficient_balance_to_pay(user: User ,wallet_balance: int ,amount: int) -> bool:
+   calculated_balance = (wallet_balance) -  (amount+(int(amount*(0.03 if user.is_premium_user else 0.05))))
+   return calculated_balance >= 0
 
 class Payment:
   def __init__(self,with_user: User, to_user_id: int)-> None:
@@ -53,8 +56,9 @@ class Payment:
     
     paying_user_wallet: Wallet = get_wallet(user=self.paying_user)
     current_user_wallet: Wallet = get_wallet(self.with_user) 
+   
     
-    if current_user_wallet.balance < amount:
+    if not have_sufficient_balance_to_pay(self.with_user, current_user_wallet.balance,amount):
       detail = {
         "status": 400,
         "message":"not enough balance to pay"
