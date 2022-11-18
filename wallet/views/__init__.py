@@ -1,3 +1,2 @@
-
-from  .pages import * 
-from  .wallet  import * 
+from .pages import *
+from .wallet import *
