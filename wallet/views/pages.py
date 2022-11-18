@@ -12,7 +12,7 @@ from ..models import Transaction, PaymentRequest, Wallet
 @method_decorator(login_required, name="dispatch")
 class HomePage(View):
     def get(self, request: HttpRequest):
-        balance: int = Wallet.objects.get(id=request.user.id).balance
+        balance: int = Wallet.objects.get(user=request.user).balance
         users: "QuerySet[User]" = User.objects.filter(is_superuser=False).exclude(
             id=request.user.id
         )
